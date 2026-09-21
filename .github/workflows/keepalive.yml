@@ -1,0 +1,14 @@
+name: Supabase keep-alive
+on:
+  schedule:
+    - cron: '13 7 * * 1,4'
+  workflow_dispatch:
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Supabase REST
+        run: |
+          code=$(curl -sS -o /dev/null -w "%{http_code}" "https://hqhpnxjqhtqaoalqekyg.supabase.co/rest/v1/cliques?select=id&limit=1" -H "apikey: sb_publishable_cExN0AKlB031crKa-GvQyg_WP-3pRsN")
+          echo "Supabase HTTP $code"
+          test "$code" = "200"
